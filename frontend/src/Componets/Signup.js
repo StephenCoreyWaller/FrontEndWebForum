@@ -4,7 +4,7 @@ import { Form, Button, Grid, Message } from 'semantic-ui-react';
 import Request from '../Connections/ApiConnection';
 
 const SignUp = () => {
-	const [password2, SetPassword2] = useState('');
+	const [password2, SetPassword2] = useState(false);
 	const [errorMessage, setErrorMessage] = useState({
 		message: '',
 		isError: false,
@@ -26,13 +26,27 @@ const SignUp = () => {
 			setErrorMessage({ message: 'Passwords do not match', isError: true });
 			return;
 		}
-		const submit = await Request.post('/auth/Register', User).catch((error) => {
-			setErrorMessage({ message: error.response.data.message, isError: true });
-		});
+		await Request.post('/auth/Register', User)
+			.then(
+				setUser({
+					UserName: '',
+					LastName: '',
+					FirstName: '',
+					AboutMe: '',
+					Email: '',
+					Password: '',
+				})
+			)
+			.catch((error) => {
+				setErrorMessage({
+					message: error.response.data.message,
+					isError: true,
+				});
+			});
 	};
 
 	return (
-		<Grid style={{ paddingTop: '30px' }} centered columns={4}>
+		<Grid centered columns={4}>
 			<Form
 				error={errorMessage.isError}
 				onSubmit={onSubmitHandler}
@@ -44,7 +58,7 @@ const SignUp = () => {
 						value={User.UserName}
 						name='UserName'
 						onChange={handleChange}
-						label='User Name'
+						placeholder='User Name'
 						required
 					/>
 				</Form.Group>
@@ -53,13 +67,13 @@ const SignUp = () => {
 						value={User.FirstName}
 						name='FirstName'
 						onChange={handleChange}
-						label='First Name'
+						placeholder='First Name'
 					/>
 					<Form.Input
 						value={User.LastName}
 						name='LastName'
 						onChange={handleChange}
-						label='Last Name'
+						placeholder='Last Name'
 					/>
 				</Form.Group>
 				<Form.Group>
@@ -67,7 +81,7 @@ const SignUp = () => {
 						value={User.AboutMe}
 						name='AboutMe'
 						onChange={handleChange}
-						label='AboutMe'
+						placeholder='AboutMe'
 						placeholder='Tell me more about you...'
 					/>
 				</Form.Group>
@@ -76,7 +90,7 @@ const SignUp = () => {
 						value={User.Email}
 						name='Email'
 						onChange={handleChange}
-						label='Email'
+						placeholder='Email'
 						required
 					/>
 				</Form.Group>
@@ -86,7 +100,7 @@ const SignUp = () => {
 						name='Password'
 						onChange={handleChange}
 						type='password'
-						label='Password'
+						placeholder='Password'
 						required
 						error={errorMessage.message === 'Passwords do not match'}
 					/>
@@ -95,7 +109,7 @@ const SignUp = () => {
 						name='Password2'
 						onChange={(e) => SetPassword2(e.target.value)}
 						type='password'
-						label='Confirm Password'
+						placeholder='Confirm Password'
 						required
 						error={errorMessage.message === 'Passwords do not match'}
 					/>
