@@ -1,10 +1,17 @@
 //Componet for the webForum signin page
 import React, { useState } from 'react';
-import { Form, Button, Grid, Message } from 'semantic-ui-react';
+import {
+	Button,
+	Form,
+	Grid,
+	Header,
+	Message,
+	Segment,
+} from 'semantic-ui-react';
 import Request from '../Connections/ApiConnection';
 
 const SignUp = () => {
-	const [password2, SetPassword2] = useState(false);
+	const [password2, SetPassword2] = useState('');
 	const [errorMessage, setErrorMessage] = useState({
 		message: '',
 		isError: false,
@@ -35,7 +42,8 @@ const SignUp = () => {
 					AboutMe: '',
 					Email: '',
 					Password: '',
-				})
+				}),
+				SetPassword2('')
 			)
 			.catch((error) => {
 				setErrorMessage({
@@ -46,83 +54,77 @@ const SignUp = () => {
 	};
 
 	return (
-		<Grid centered columns={4}>
-			<Form
-				error={errorMessage.isError}
-				onSubmit={onSubmitHandler}
-				widths='equal'
-			>
-				<Message error content={errorMessage.message} />
-				<Form.Group>
-					<Form.Input
-						value={User.UserName}
-						name='UserName'
-						onChange={handleChange}
-						placeholder='User Name'
-						required
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Input
-						value={User.FirstName}
-						name='FirstName'
-						onChange={handleChange}
-						placeholder='First Name'
-					/>
-					<Form.Input
-						value={User.LastName}
-						name='LastName'
-						onChange={handleChange}
-						placeholder='Last Name'
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.TextArea
-						value={User.AboutMe}
-						name='AboutMe'
-						onChange={handleChange}
-						placeholder='AboutMe'
-						placeholder='Tell me more about you...'
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Input
-						value={User.Email}
-						name='Email'
-						onChange={handleChange}
-						placeholder='Email'
-						required
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Input
-						value={User.Password}
-						name='Password'
-						onChange={handleChange}
-						type='password'
-						placeholder='Password'
-						required
-						error={errorMessage.message === 'Passwords do not match'}
-					/>
-					<Form.Input
-						value={password2}
-						name='Password2'
-						onChange={(e) => SetPassword2(e.target.value)}
-						type='password'
-						placeholder='Confirm Password'
-						required
-						error={errorMessage.message === 'Passwords do not match'}
-					/>
-				</Form.Group>
-				<Button
-					positive
-					disabled={
-						!User.Email || !User.Password || !password2 || !User.UserName
-					}
+		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+			<Grid.Column style={{ maxWidth: 450 }}>
+				<Header as='h2' color='teal' textAlign='center'>
+					Sign Up
+				</Header>
+				<Form
+					size='large'
+					error={errorMessage.isError}
+					onSubmit={onSubmitHandler}
 				>
-					Submit
-				</Button>
-			</Form>
+					<Message error content={errorMessage.message} />
+					<Segment>
+						<Form.Input
+							value={User.UserName}
+							name='UserName'
+							onChange={handleChange}
+							placeholder='User Name'
+						/>
+						<Form.Input
+							value={User.FirstName}
+							name='FirstName'
+							onChange={handleChange}
+							placeholder='First Name'
+						/>
+						<Form.Input
+							value={User.LastName}
+							name='LastName'
+							onChange={handleChange}
+							placeholder='Last Name'
+						/>
+						<Form.TextArea
+							value={User.AboutMe}
+							name='AboutMe'
+							onChange={handleChange}
+							placeholder='AboutMe'
+							placeholder='Tell me more about you...'
+						/>
+						<Form.Input
+							value={User.Email}
+							name='Email'
+							onChange={handleChange}
+							placeholder='Email'
+						/>
+						<Form.Input
+							value={User.Password}
+							name='Password'
+							onChange={handleChange}
+							type='password'
+							placeholder='Password'
+							error={errorMessage.message === 'Passwords do not match'}
+						/>
+						<Form.Input
+							value={password2}
+							name='password2'
+							onChange={(e) => SetPassword2(e.target.value)}
+							placeholder='Confirm Password'
+							error={errorMessage.message === 'Passwords do not match'}
+						/>
+
+						<Button
+							disabled={
+								!User.Email || !User.Password || !password2 || !User.UserName
+							}
+							color='teal'
+							size='large'
+						>
+							Login
+						</Button>
+					</Segment>
+				</Form>
+			</Grid.Column>
 		</Grid>
 	);
 };

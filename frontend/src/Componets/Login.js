@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Request from '../Connections/ApiConnection';
-import { Form, Button, Message, Segment } from 'semantic-ui-react';
+import {
+	Button,
+	Form,
+	Grid,
+	Header,
+	Image,
+	Message,
+	Segment,
+} from 'semantic-ui-react';
 
 const Login = ({ setToken }) => {
 	const [loginSuccess, setloginSuccess] = useState(false);
@@ -41,33 +49,45 @@ const Login = ({ setToken }) => {
 		};
 	}, [loginSuccess, setToken, User]);
 	return (
-		<Segment textAlign={'center'} style={{ width: '300px' }}>
-			<Form error={errorMessage.isError} onSubmit={onSubmit} widths={'equal'}>
-				<Message error content={errorMessage.message} />
-				<h3>Login</h3>
+		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+			<Grid.Column style={{ maxWidth: 350 }}>
+				<Header as='h2' color='teal' textAlign='center'>
+					Log-in to your account
+				</Header>
+				<Form error={errorMessage.isError} onSubmit={onSubmit}>
+					<Message error content={errorMessage.message} />
+					<Segment>
+						<Form.Input
+							fluid
+							icon='user'
+							iconPosition='left'
+							placeholder='User Name'
+							value={User.UserName}
+							name='UserName'
+							onChange={handleChange}
+							type='text'
+						/>
+						<Form.Input
+							fluid
+							icon='lock'
+							iconPosition='left'
+							placeholder='Password'
+							type='password'
+							value={User.Password}
+							name='Password'
+							onChange={handleChange}
+						/>
 
-				<Form.Group>
-					<Form.Input
-						value={User.UserName}
-						name='UserName'
-						onChange={handleChange}
-						type='text'
-						placeholder='User Name'
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Input
-						value={User.Password}
-						name='Password'
-						onChange={handleChange}
-						type='password'
-						placeholder='Password'
-					/>
-				</Form.Group>
-
-				<Button positive>Submit</Button>
-			</Form>
-		</Segment>
+						<Button color='teal' fluid size='large'>
+							Login
+						</Button>
+					</Segment>
+				</Form>
+				<Message>
+					New to me? <a href='#'>Sign Up</a>
+				</Message>
+			</Grid.Column>
+		</Grid>
 	);
 };
 export default Login;
